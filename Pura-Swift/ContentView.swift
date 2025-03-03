@@ -8,17 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var authViewModel = AuthenticationViewModel()
+    @StateObject var daftarPelayananViewModel = DaftarPelayananViewModel()
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            Group {
+                if authViewModel.isAuthenticated {
+                    DashboardView()
+                        .environmentObject(authViewModel)
+                        .environmentObject(daftarPelayananViewModel)
+                } else {
+                    LoginView()
+                        .environmentObject(authViewModel)
+                }
+            }
         }
-        .padding()
     }
 }
 
-#Preview {
-    ContentView()
-}
+
